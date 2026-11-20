@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CyberShield — Кибербезопасность в сети</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Живой фон Матрицы -->
+  <canvas id="matrixCanvas"></canvas>
+
+  <!-- Шапка -->
+  <header>
+    <div class="logo">🛡️ Cyber<span>Shield</span></div>
+    <nav>
+      <a href="#threats">Угрозы</a>
+      <a href="#passgen">Генератор паролей</a>
+      <a href="#phishing">Тест на фишинг</a>
+      <button class="theme-btn" id="themeToggle">☀️ Светлый режим</button>
+    </nav>
+  </header>
+
+  <!-- Главный экран -->
+  <section class="hero">
+    <div class="badge">● СИСТЕМА ЗАЩИТЫ АКТИВНА</div>
+    <h1>Твоя цифровая броня в интернете</h1>
+    <p>Научись создавать невзламываемые пароли, распознавать уловки мошенников за 3 секунды и защищать свои аккаунты.</p>
+    <div class="hero-actions">
+      <a href="#passgen" class="btn-primary">Создать супер-пароль</a>
+      <a href="#phishing" class="btn-outline">Пройти тренажёр</a>
+    </div>
+  </section>
+
+  <!-- Интерактивные карточки угроз -->
+  <section id="threats" class="container">
+    <h2 class="section-title">Главные киберугрозы</h2>
+    <p class="section-subtitle">Нажми на любую карточку, чтобы изучить способ защиты</p>
+
+    <div class="cards-grid">
+      <div class="card" onclick="openModal('phishing')">
+        <div class="card-top">
+          <span class="card-icon">🎣</span>
+          <span class="tag">Опасно</span>
+        </div>
+        <h3>Фишинг</h3>
+        <p>Поддельные сайты и сообщения, которые крадут логины, пароли и данные карт.</p>
+        <span class="card-link">Открыть протокол защиты →</span>
+      </div>
+
+      <div class="card" onclick="openModal('brute')">
+        <div class="card-top">
+          <span class="card-icon">🔓</span>
+          <span class="tag">Часто</span>
+        </div>
+        <h3>Брутфорс (перебор)</h3>
+        <p>Автоматический подбор простых паролей программами со скоростью миллиард попыток в секунду.</p>
+        <span class="card-link">Открыть протокол защиты →</span>
+      </div>
+
+      <div class="card" onclick="openModal('social')">
+        <div class="card-top">
+          <span class="card-icon">🎭</span>
+          <span class="tag">Хитро</span>
+        </div>
+        <h3>Социальная инженерия</h3>
+        <p>Психологические уловки, когда злоумышленник притворяется другом, банком или техподдержкой.</p>
+        <span class="card-link">Открыть протокол защиты →</span>
+      </div>
+
+      <div class="card" onclick="openModal('twofa')">
+        <div class="card-top">
+          <span class="card-icon">🔐</span>
+          <span class="tag">Защита</span>
+        </div>
+        <h3>2FA (Двухфакторка)</h3>
+        <p>Второй рубеж обороны: код из приложения или SMS, без которого в аккаунт не войти даже зная пароль.</p>
+        <span class="card-link">Открыть протокол защиты →</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Интерактивный генератор и анализатор паролей -->
+  <section id="passgen" class="container">
+    <h2 class="section-title">Генератор и сканер паролей</h2>
+    <p class="section-subtitle">Настрой параметры и проверь, сколько времени займёт взлом</p>
+
+    <div class="panel-box">
+      <div class="password-display">
+        <input type="text" id="passwordOutput" readonly value="K9#mP2$vL8@xQ4" />
+        <button class="copy-btn" onclick="copyPassword()" id="copyBtn">Копировать</button>
+      </div>
+
+      <div class="strength-bar-wrap">
+        <div class="strength-bar" id="strengthBar"></div>
+      </div>
+      <div class="strength-info">
+        <span id="strengthText">Надёжность: Высокая</span>
+        <span id="crackTime">Время взлома: ~400 лет</span>
+      </div>
+
+      <div class="controls">
+        <label class="range-label">
+          Длина пароля: <strong id="lengthVal">14</strong> символов
+          <input type="range" id="lengthRange" min="6" max="28" value="14" oninput="generatePassword()" />
+        </label>
+
+        <div class="checkboxes">
+          <label><input type="checkbox" id="incUpper" checked onchange="generatePassword()" /> Заглавные (A-Z)</label>
+          <label><input type="checkbox" id="incNumbers" checked onchange="generatePassword()" /> Цифры (0-9)</label>
+          <label><input type="checkbox" id="incSymbols" checked onchange="generatePassword()" /> Символы (!@#$%)</label>
+        </div>
+
+        <button class="btn-primary full-btn" onclick="generatePassword()">⚡ Сгенерировать новый пароль</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Интерактивный тренажёр: Распознай фишинг -->
+  <section id="phishing" class="container">
+    <h2 class="section-title">Тренажёр: Поймай мошенника</h2>
+    <p class="section-subtitle">Прочитай входящее сообщение и реши — это обман или настоящее письмо</p>
+
+    <div class="panel-box game-box">
+      <div class="game-header">
+        <span id="roundCounter">Ситуация 1 из 4</span>
+        <span id="scoreCounter">Очки: 0</span>
+      </div>
+
+      <div class="message-card" id="messageCard">
+        <div class="msg-sender" id="msgSender">От: support@vk-security-login.ru</div>
+        <div class="msg-text" id="msgText">«Ваш аккаунт будет заблокирован через 2 часа! Срочно перейдите по ссылке и введите пароль для подтверждения личности.»</div>
+      </div>
+
+      <div class="game-buttons" id="gameButtons">
+        <button class="btn-danger" onclick="answerPhishing(true)">🚨 Это мошенники (Фишинг)</button>
+        <button class="btn-safe" onclick="answerPhishing(false)">✅ Это безопасно</button>
+      </div>
+
+      <div class="game-feedback" id="gameFeedback"></div>
+      <button class="btn-primary full-btn" id="nextRoundBtn" style="display:none;" onclick="nextRound()">Следующая ситуация →</button>
+    </div>
+  </section>
+
+  <!-- Модальное окно -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+    <div class="modal-window">
+      <button class="modal-close" onclick="forceCloseModal()">✖</button>
+      <div class="modal-icon" id="modalIcon">🛡️</div>
+      <h3 id="modalTitle">Заголовок</h3>
+      <p id="modalText">Текст</p>
+      <div class="modal-tip" id="modalTip">Совет</div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Проект по информатике и кибербезопасности • CyberShield 2026</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
